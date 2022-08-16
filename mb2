@@ -1,0 +1,28 @@
+pipeline {
+    agent none 
+    parameters {
+            string defaultValue: 'master', description: 'Enter the branch to build parallely', name: 'Branch'
+    }
+    stages {
+        stage('TESTING') {
+            parallel {
+                stage('TESTING1') {
+                    agent { label 'master' } 
+                    steps {
+                        sh 'echo "This is a TESTING1 stage"'
+                        sh 'sleep 5'
+                    }
+                }
+                stage('TESTING2') {
+                    agent { label 'master' } 
+                    steps {
+                        sh '''
+                            echo "This is a TESTING2 stage"
+                            sleep 5
+                        '''
+                    }
+                }
+            }    
+        }    
+    }     
+}
