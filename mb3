@@ -1,0 +1,31 @@
+pipeline {
+    agent none 
+    parameters {
+        choice choices: ['Master', '', 'Branch'], description: 'enter the branch name', name: 'branch'
+    }
+    stages {
+        stage('Master choice') {
+        when {
+            expression { branch == 'Master' }
+        }
+        parallel {
+            stage('TESTING1') {
+            agent { label 'master' } 
+                steps {
+                    sh 'echo "This is a TESTING1 stage"'
+                    sh 'sleep 5'
+                }
+            }
+            stage('TESTING2') {
+            agent { label 'master' } 
+                steps {
+                    sh '''
+                    echo "This is a TESTING2 stage"
+                    sleep 5
+                '''
+                }
+            }
+        }
+        }
+    }
+}
