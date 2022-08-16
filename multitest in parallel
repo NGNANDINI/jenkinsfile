@@ -1,6 +1,5 @@
 pipeline {
-parallel {
-    agent any
+   agent any
 
     stages {
         stage('Test1') {
@@ -24,4 +23,3 @@ parallel {
         }
     }
     }
-}
