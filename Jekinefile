@@ -1,0 +1,24 @@
+pipeline{
+    agent any
+    tools{
+        maven 'Maven 3.6'
+    }
+    stages{
+        stage ('Build'){
+            steps{
+                sh 'mvn clean package'
+            }
+            post{
+                success{
+                    echo "Archive artifacts"
+                    archiveArttifacts artifacts: '**/target/*.war'
+                }
+            }
+        } 
+        stage ('Deploy to tomcat'){
+            step{
+                deploy adapters: [tomcat9(credentialsId: 'tom', path: '', url: 'http://13.233.238.186:8080/')], contextPath: null, war: '**/*war'  
+            }
+        }
+    }
+}
